@@ -31,11 +31,15 @@ edit__ () {
   test -n $day || read -p 'day? ' day
   for leaf in $(list__ $day); do
     echo $leaf
-    read -p 'edit [y|e,n,q,d]? ' -n1
+    read -p 'edit [y|e,n,q,d,r]? ' -n1
     echo
     case $REPLY in
       d)
         __exec rm $leaf
+	;;
+      r)
+        read -p $(basename $leaf)', rename? ' rename
+	__exec mv $leaf $(dirname $leaf)/$rename
 	;;
       y|e)
         vim '+ normal Go' $leaf
