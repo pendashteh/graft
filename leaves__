@@ -65,8 +65,10 @@ tree__ () {
   done
 }
 
+headings__help='@arg file @arg range=1, @prints list of heaings'
 headings__ () {
   read leaf range <<< $@
+  test ! -z $leaf && test -f $leaf || return -1
   range=${range:-'1,'}
   cat $leaf | grep -E "^[\#]{$range}[^\#].*$"
 }
