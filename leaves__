@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+__puton__ () {
+  datadir__=$HOME/.undies/leaves
+  mkdir -p $datadir__
+}
+
+here__ () {
+  datadir__=$(pwd)
+  mkdir -p $datadir__
+  __run "$@"
+}
+
+new__ () {
+  local day=$1
+  test -z $day && read -p 'day? ' day
+  new=$(mktemp -p $datadir__ XXXX--$day.leave.md)
+  echo $new
+  echo 'created:' $(date) >> $new
+  echo '--' >> $new
+  __exec vim '+ normal Go' $new
+}
+
+list__ () {
+  local day=${1:-}
+  find $datadir__ -name *$day.leave.md
+}
+
+edit__ () {
+  local day=$1
+  test -n $day || read -p 'day? ' day
+  for leaf in $(list__ $day); do
+    echo $leaf
+    read -p 'edit [y|e,n,q,d]? ' -n1
+    echo
+    case $REPLY in
+      d)
+        __exec rm $leaf
+	;;
+      y|e)
+        vim '+ normal Go' $leaf
+	;;
+      q)
+        break
+	;;
+      n|*)
+        continue
+	;;
+    esac
+  done
+  echo done
+}
+
+tree__help='@arg [day=*] [range=1,] @prints tree of leaves and their headlines @return null'
+tree__ () {
+  local day=${1:-'*'}
+  local range=${2:-''}
+  for leaf in $(list__ "$day"); do
+    echo $leaf
+    headings__ $leaf $range | sed 's|#|-|g'
+  done
+}
+
+headings__ () {
+  read leaf range <<< $@
+  range=${range:-'1,'}
+  cat $leaf | grep -E "^[\#]{$range}[^\#].*$"
+}
+
+. undies
