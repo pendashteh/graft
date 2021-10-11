@@ -2,6 +2,8 @@
 
 __puton__ () {
   datadir__=${datadir__:-$HOME/.undies/leaves}
+  pattern__mktemp=${pattern__mktemp:-'XXXX--%s.leave.md'}
+  pattern__find=${pattern__find:-'*%s*.leave.md'}
   mkdir -p $datadir__
 }
 
@@ -11,11 +13,21 @@ here__ () {
   __run "$@"
 }
 
+__pattern () {
+  local varname='pattern__'$1
+  local title=$2
+  printf ${!varname} $title
+}
+
 new__ () {
   local title=$1
   test -z $title && read -p 'title? ' title
-  new=$(mktemp -p $datadir__ XXXX--$title.leave.md)
-  echo $new
+  local pattern=$(__pattern mktemp $title)
+  local mktemp_dir=$datadir__/$(dirname $pattern)
+  local mktemp_tpl=$(basename $pattern)
+  mkdir -p $mktemp_dir
+  local new=$(mktemp -p $mktemp_dir $mktemp_tpl)
+  touch $new
   echo 'created:' $(date) >> $new
   echo '--' >> $new
   __exec vim '+ normal Go' $new
@@ -23,7 +35,8 @@ new__ () {
 
 list__ () {
   local title=${1:-''}
-  find $datadir__ -name '*'$title.leave.md
+  set -o noglob
+  find $datadir__ -wholename $(__pattern find $title)
 }
 
 edit__ () {
