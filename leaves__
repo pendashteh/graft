@@ -1,10 +1,21 @@
 #!/usr/bin/env bash
 
+__main__help='Usage:
+ $ __app__ ${datadir__:-} ${task:-help}'
+
 __puton__ () {
   datadir__=${datadir__:-$HOME/.undies/leaves}
   pattern__mktemp=${pattern__mktemp:-'XXXX--%s.leave.md'}
   pattern__find=${pattern__find:-'*%s*.leave.md'}
   mkdir -p $datadir__
+}
+
+__fallback__ () {
+  if [ -d $1 ]; then
+    datadir__=$1
+    shift
+    __run "$@"
+  fi
 }
 
 here__ () {
