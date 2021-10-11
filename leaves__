@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 __puton__ () {
-  datadir__=$HOME/.undies/leaves
+  datadir__=${datadir__:-$HOME/.undies/leaves}
   mkdir -p $datadir__
 }
 
