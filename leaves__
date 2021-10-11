@@ -12,9 +12,9 @@ here__ () {
 }
 
 new__ () {
-  local day=$1
-  test -z $day && read -p 'day? ' day
-  new=$(mktemp -p $datadir__ XXXX--$day.leave.md)
+  local title=$1
+  test -z $title && read -p 'title? ' title
+  new=$(mktemp -p $datadir__ XXXX--$title.leave.md)
   echo $new
   echo 'created:' $(date) >> $new
   echo '--' >> $new
@@ -22,14 +22,14 @@ new__ () {
 }
 
 list__ () {
-  local day=${1:-}
-  find $datadir__ -name '*'$day.leave.md
+  local title=${1:-''}
+  find $datadir__ -name '*'$title.leave.md
 }
 
 edit__ () {
-  local day=$1
-  test -n $day || read -p 'day? ' day
-  for leaf in $(list__ $day); do
+  local title=$1
+  test -n $title || read -p 'title? ' title
+  for leaf in $(list__ $title); do
     echo $leaf
     read -p 'edit [y|e,n,q,d,r]? ' -n1
     echo
@@ -55,11 +55,11 @@ edit__ () {
   echo done
 }
 
-tree__help='@arg [day=*] [range=1,] @prints tree of leaves and their headlines @return null'
+tree__help='@arg [pattern=*] [range=1,] @prints tree of leaves and their headlines @return null'
 tree__ () {
-  local day=${1:-'*'}
+  local pattern=${1:-'*'}
   local range=${2:-''}
-  for leaf in $(list__ "$day"); do
+  for leaf in $(list__ "$pattern"); do
     echo $leaf
     headings__ $leaf $range | sed 's|#|-|g'
   done
