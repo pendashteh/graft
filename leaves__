@@ -23,7 +23,7 @@ new__ () {
 
 list__ () {
   local day=${1:-}
-  find $datadir__ -name *$day.leave.md
+  find $datadir__ -name '*'$day.leave.md
 }
 
 edit__ () {
