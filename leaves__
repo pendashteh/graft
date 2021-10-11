@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
 __main__help='Usage:
- $ __app__ ${datadir__:-} ${task:-help}'
+ $ __app__ ${datadir__:-} ${task:-help}
+'
 
 __puton__ () {
   datadir__=${datadir__:-$HOME/.undies/leaves}
@@ -47,7 +48,7 @@ new__ () {
 list__ () {
   local title=${1:-''}
   set -o noglob
-  find $datadir__ -wholename $(__pattern find $title)
+  find $datadir__ -wholename $(__pattern find $title) 2>/dev/null
 }
 
 edit__ () {
