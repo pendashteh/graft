@@ -31,18 +31,43 @@ __pattern () {
   printf ${!varname} $title
 }
 
-new__ () {
-  local title=$1
-  test -z $title && read -p 'title? ' title
+copy__help='@arg file @does copy file content into a new leaf'
+copy__ () {
+  local file=$1
+  [ ! -e $file ] && return -1
+  local title_default=$(basename $file)
+  read -p "title? [$title_default] " title
+  test -z $title && title=$title_default
+  local test
+  __prepare newfile $title
+  echo '; copied from '$file >> $newfile
+  cat $file >> $newfile
+  __edit $newfile
+}
+
+__prepare () {
+  local -n ref_newfile=$1
+  local title=$2
   local pattern=$(__pattern mktemp $title)
   local mktemp_dir=$datadir__/$(dirname $pattern)
   local mktemp_tpl=$(basename $pattern)
   mkdir -p $mktemp_dir
-  local new=$(mktemp -p $mktemp_dir $mktemp_tpl)
-  touch $new
-  echo 'created:' $(date) >> $new
-  echo '--' >> $new
-  __exec vim '+ normal Go' $new
+  local mktemp_path=$(mktemp -p $mktemp_dir $mktemp_tpl)
+  touch $mktemp_path
+  echo 'created:' $(date) >> $mktemp_path
+  echo '--' >> $mktemp_path
+  read ${!ref_newfile} <<<$mktemp_path
+}
+
+new__ () {
+  local title=$1
+  test -z $title && read -p 'title? ' title
+  __prepare newfile $title
+  __edit $newfile
+}
+
+__edit () {
+  __exec vim '+ normal Go' $1
 }
 
 list__ () {
@@ -67,7 +92,7 @@ edit__ () {
 	__exec mv $leaf $(dirname $leaf)/$rename
 	;;
       y|e)
-        vim '+ normal Go' $leaf
+        __edit $leaf
 	;;
       q)
         break
