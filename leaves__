@@ -16,6 +16,8 @@ __fallback__ () {
     datadir__=$1
     shift
     __run "$@"
+  else
+    >&2 __help $@
   fi
 }
 
