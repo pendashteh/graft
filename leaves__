@@ -87,13 +87,31 @@ move__ () {
 }
 
 edit__ () {
+  for leaf in $(list__ $title); do
+    __edit $leaf
+  done
+}
+
+loop__ () {
   local title=$1
   test -n $title || read -p 'title? ' title
   for leaf in $(list__ $title); do
     echo $leaf
-    read -p 'edit [y|e,n,q,d,r]? ' -n1
+    read -p '[v,e,n,q,d,r,?]? ' -n1
     echo
     case $REPLY in
+      '?')
+        echo 'v: view'
+        echo 'e: edit'
+        echo 'n: next'
+        echo 'q: quit'
+        echo 'd: delete'
+        echo 'r: rm'
+        echo '?: help'
+	;;
+      v)
+        __exec less $leaf
+	;;
       d)
         __exec rm $leaf
 	;;
@@ -101,7 +119,7 @@ edit__ () {
         read -p $(basename $leaf)', rename? ' rename
 	__exec mv $leaf $(dirname $leaf)/$rename
 	;;
-      y|e)
+      e)
         __edit $leaf
 	;;
       q)
