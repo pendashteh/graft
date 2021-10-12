@@ -78,6 +78,14 @@ list__ () {
   find $datadir__ -wholename $(__pattern find $title) 2>/dev/null
 }
 
+move__help='@arg pattern @arg destination:dir @does move the leaf to destinatoin directory.'
+move__ () {
+  local pattern=$1
+  local dest=$2
+  [ -d "$dest" ] || return -1
+  __exec mv $(list__ $pattern) $dest
+}
+
 edit__ () {
   local title=$1
   test -n $title || read -p 'title? ' title
