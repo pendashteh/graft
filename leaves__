@@ -91,7 +91,8 @@ move__ () {
 }
 
 edit__ () {
-  for leaf in $(list__ $title); do
+  local pattern=$1
+  for leaf in $(list__ $pattern); do
     __edit $leaf
   done
 }
