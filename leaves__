@@ -24,6 +24,9 @@ __fallback__ () {
 here__ () {
   datadir__=$(pwd)
   mkdir -p $datadir__
+  if [ -e $datadir__/.graft__ ]; then
+    source $datadir__/.graft__
+  fi
   __run "$@"
 }
 
