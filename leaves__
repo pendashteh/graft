@@ -6,8 +6,8 @@ __main__help='Usage:
 
 __puton__ () {
   datadir__=${datadir__:-$HOME/.undies/leaves}
-  pattern__mktemp=${pattern__mktemp:-'XXXX--%s.leave.md'}
-  pattern__find=${pattern__find:-'*%s*.leave.md'}
+  pattern__mktemp__=${pattern__mktemp__:-'XXXX--%s.leave.md'}
+  pattern__find__=${pattern__find__:-'*%s*.leave.md'}
   mkdir -p $datadir__
 }
 
@@ -28,7 +28,7 @@ here__ () {
 }
 
 __pattern () {
-  local varname='pattern__'$1
+  local varname='pattern__'$1'__'
   local title=$2
   printf ${!varname} $title
 }
