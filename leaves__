@@ -114,7 +114,7 @@ loop__ () {
         echo '?: help'
 	;;
       v)
-        __exec less $leaf
+        __confirm__= __exec less $leaf
 	;;
       d)
         __exec rm $leaf
