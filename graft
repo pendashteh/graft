@@ -101,7 +101,8 @@ edit__ () {
 loop__ () {
   local title=$1
   test -n $title || read -p 'title? ' title
-  for leaf in $(list__ $title); do
+  for leaf in $(list__ $title); do {
+    while true; do { {
     echo $leaf
     read -p '[v,e,n,q,d,r,?]? ' -n1
     echo
@@ -129,13 +130,14 @@ loop__ () {
         __edit $leaf
 	;;
       q)
-        break
+        break 2
 	;;
       n|*)
-        continue
+	 break
 	;;
     esac
-  done
+  } } done
+  } done
   echo done
 }
 
