@@ -9,6 +9,9 @@ __puton__ () {
   pattern__mktemp__=${pattern__mktemp__:-'XXXX--%s.leave.md'}
   pattern__find__=${pattern__find__:-'*%s*.leave.md'}
   mkdir -p $datadir__
+  if [ -e $datadir__/.graft__ ]; then
+    source $datadir__/.graft__
+  fi
 }
 
 __fallback__ () {
@@ -21,12 +24,10 @@ __fallback__ () {
   fi
 }
 
+: '@deprecated can be done instead with `graft .`'
 here__ () {
   datadir__=$(pwd)
-  mkdir -p $datadir__
-  if [ -e $datadir__/.graft__ ]; then
-    source $datadir__/.graft__
-  fi
+  __puton__ "$@"
   __run "$@"
 }
 
