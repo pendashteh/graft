@@ -14,6 +14,16 @@ __puton__ () {
   fi
 }
 
+git__help='@arg git command @does initiates or executes git commands at datadir__'
+git__ () {
+  git -C $datadir__ rev-parse --is-inside-work-tree >/dev/null
+  if test ! $? -eq 0; then {
+    __exec git init $datadir__
+  } else {
+    __exec git -C $datadir__ "${@:-status}"
+  } fi
+}
+
 __fallback__ () {
   if [ -d $1 ]; then
     datadir__=$1
