@@ -169,4 +169,20 @@ headings__ () {
   cat $leaf | grep -E "^[\#]{$range}[^\#].*$"
 }
 
-. undies
+search__ () {
+  local pattern=$1
+  local term=$2
+  __exec grep -nHR "$term" $datadir__/$(__pattern find $pattern)
+}
+
+todo__ () {
+  local pattern=${1:-''}
+  __silent__=1 search__ "$pattern" '\[\s\]'
+}
+
+done__ () {
+  local pattern=${1:-''}
+  __silent__=1 search__ "$pattern" '\[x\]'
+}
+
+source $(dirname $(realpath $BASH_SOURCE))/vendor/undies/undies
