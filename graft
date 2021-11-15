@@ -123,7 +123,7 @@ loop__ () {
         echo 'n: next'
         echo 'q: quit'
         echo 'd: delete'
-        echo 'r: rm'
+        echo 'r: rename'
         echo '?: help'
 	;;
       v)
