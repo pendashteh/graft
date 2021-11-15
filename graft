@@ -131,6 +131,7 @@ loop__ () {
 	;;
       d)
         __exec rm $leaf
+	break
 	;;
       r)
         read -p $(basename $leaf)', rename? ' rename
