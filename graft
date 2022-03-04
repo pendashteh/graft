@@ -138,7 +138,8 @@ loop__ () {
 	;;
       r)
         read -p $(basename $leaf)', rename? ' rename
-	__exec mv $leaf $(dirname $leaf)/$rename
+	rename=$(dirname $leaf)/$rename
+	__exec mv $leaf $rename && leaf=$rename
 	;;
       e)
         __edit $leaf
