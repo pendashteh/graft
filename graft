@@ -69,10 +69,7 @@ __prepare () {
   local mktemp_tpl=$(basename $pattern)
   mkdir -p $mktemp_dir
   local mktemp_path=$(mktemp --dry-run --tmpdir=$mktemp_dir $mktemp_tpl)
-  __exec touch $mktemp_path || {
-    rm $mktemp_path
-    return 1
-  }
+  __exec touch $mktemp_path || return 1
   echo 'created:' $(date) >> $mktemp_path
   echo '--' >> $mktemp_path
   read ${!ref_newfile} <<<$mktemp_path
