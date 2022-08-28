@@ -68,7 +68,7 @@ __prepare () {
   local mktemp_dir=$datadir__/$(dirname $pattern)
   local mktemp_tpl=$(basename $pattern)
   mkdir -p $mktemp_dir
-  local mktemp_path=$(mktemp -p $mktemp_dir $mktemp_tpl)
+  local mktemp_path=$(mktemp --dry-run --tmpdir=$mktemp_dir $mktemp_tpl)
   __exec touch $mktemp_path || {
     rm $mktemp_path
     return 1
