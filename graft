@@ -6,8 +6,8 @@ __main__help='Usage:
 
 __puton__ () {
   datadir__=${datadir__:-$HOME/.undies/leaves}
-  pattern__mktemp__=${pattern__mktemp__:-'XXXX--%s.leave.md'}
-  pattern__find__=${pattern__find__:-'*%s*.leave.md'}
+  pattern__mktemp__=${pattern__mktemp__:-'XXXX--%s.leaf.md'}
+  pattern__find__=${pattern__find__:-'*%s*.leaf.md'}
   mkdir -p $datadir__
   if [ -e $datadir__/.graft__ ]; then
     source $datadir__/.graft__
